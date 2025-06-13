@@ -7,6 +7,16 @@
     {% trans %}part.new.card_title{% endtrans %}
 {% endblock %}
 
+{% block card_content %}
+    <div data-controller="pages--barcode-lookup" data-pages--barcode-lookup-url-value="{{ path('barcode_lookup') }}">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" data-pages--barcode-lookup-target="input" placeholder="Barcode" />
+            <button type="button" class="btn btn-secondary" data-action="pages--barcode-lookup#lookup">Lookup</button>
+        </div>
+    </div>
+    {{ parent() }}
+{% endblock %}
+
 {% block card_title %}
     <i class="fas fa-edit fa-plus-square" aria-hidden="true"></i>
     {% trans %}part.new.card_title{% endtrans %}
