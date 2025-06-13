@@ -1,11 +1,11 @@
 <?php
 namespace App\Services\Barcode;
 
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use App\Services\InfoProviderSystem\Providers\MouserProvider;
 
 class BarcodeLookupService
 {
-    public function __construct(private HttpClientInterface $httpClient, private string $apiKey)
+    public function __construct(private MouserProvider $mouserProvider)
     {
     }
 
@@ -15,31 +15,19 @@ class BarcodeLookupService
             return [];
         }
 
-        $url = 'https://api.barcodelookup.com/v3/products';
-        $response = $this->httpClient->request('GET', $url, [
-            'query' => [
-                'barcode' => $barcode,
-                'key' => $this->apiKey,
-                'formatted' => 'y',
-            ],
-        ]);
-
-        if ($response->getStatusCode() !== 200) {
+        $results = $this->mouserProvider->searchByKeyword($barcode);
+        if (count($results) === 0) {
             return [];
         }
 
-        $data = $response->toArray(false);
-        if (!isset($data['products'][0])) {
-            return [];
-        }
-
-        $product = $data['products'][0];
+        $part = $results[0];
 
         return [
-            'name' => $product['title'] ?? null,
-            'manufacturer' => $product['manufacturer'] ?? null,
-            'mpn' => $product['mpn'] ?? null,
-            'datasheet' => $product['datasheet'] ?? null,
+            'name' => $part->name,
+            'manufacturer' => $part->manufacturer,
+            'mpn' => $part->mpn,
+            'datasheet' => $part->datasheets[0]->url ?? null,
+            'product_url' => $part->provider_url,
         ];
     }
 }

@@ -381,7 +381,7 @@ services:
 
     App\Services\Barcode\BarcodeLookupService:
         arguments:
-            $apiKey: '%env(BARCODE_LOOKUP_API_KEY)%'
+            $mouserProvider: '@App\\Services\\InfoProviderSystem\\Providers\\MouserProvider'
 
     App\Doctrine\Middleware\MySQLSSLConnectionMiddlewareWrapper:
         arguments:

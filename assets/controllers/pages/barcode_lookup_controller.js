@@ -22,9 +22,16 @@ export default class extends Controller {
                     const el = document.querySelector("[name='part[manufacturer_product_number]']");
                     if (el) el.value = data.mpn;
                 }
+                if (data.manufacturer) {
+                    const el = document.querySelector("[name='part[manufacturer]']");
+                    if (el) el.value = data.manufacturer;
+                }
                 if (data.datasheet) {
                     const el = document.querySelector("[name='part[manufacturer_product_url]']");
                     if (el) el.value = data.datasheet;
+                } else if (data.product_url) {
+                    const el = document.querySelector("[name='part[manufacturer_product_url]']");
+                    if (el) el.value = data.product_url;
                 }
             })
             .catch(() => {
