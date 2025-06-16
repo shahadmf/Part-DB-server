@@ -379,6 +379,10 @@ services:
             $partdb_banner: '%partdb.banner%'
             $project_dir: '%kernel.project_dir%'
 
+    App\Services\Barcode\BarcodeLookupService:
+        arguments:
+            $mouserProvider: '@App\\Services\\InfoProviderSystem\\Providers\\MouserProvider'
+
     App\Doctrine\Middleware\MySQLSSLConnectionMiddlewareWrapper:
         arguments:
             $enabled: '%env(bool:DATABASE_MYSQL_USE_SSL_CA)%'
